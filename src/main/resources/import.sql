@@ -1,0 +1,1 @@
+INSERT INTO `photos`(`id`, `created_at`, `description`, `img`, `title`, `visible`) VALUES (1,'2023-07-06 09:00:00','Foto mare estate 2023, senza filtri','https://www.campania.info/wp-content/uploads/sites/111/paestum-mare-hd.jpg','Mare',1)

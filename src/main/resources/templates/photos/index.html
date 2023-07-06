@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FinalProject</title>
+</head>
+<body>
+<h1>Lista delle foto</h1>
+<ul>
+    <li th:each="photo : ${photoList}" th:text="${photo.title}"></li>
+</ul>
+</body>
+</html>
