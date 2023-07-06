@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>FinalProject</title>
+<head th:insert="fragments/resources :: head(pageTitle='PhotoList')">
 </head>
 <body>
-<h1>Lista delle foto</h1>
-<ul>
-    <li th:each="photo : ${photoList}" th:text="${photo.title}"></li>
-</ul>
+<nav th:replace="fragments/navbar :: navbar(current='photos')"></nav>
+<div class="container">
+    <h1>Lista delle foto</h1>
+    <div class="row">
+        <div class="col-3" th:each="photo : ${photoList}">
+            <div class="card" style="width: 18rem;">
+                <img th:src="${photo.img}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 th:text="${photo.title}" class="card-title"></h5>
+                    <div class="d-flex justify-content-center">
+                        <a th:href="@{|/photos/${photo.id}|}" class="btn btn-primary">Dettaglio</a>
+                        <a th:href="@{|/photos/edit/${photo.id}|}" class="btn btn-outline-primary mx-2">Modifica</a>
+                        <form th:action="@{|/photos/delete/${photo.id}|}" method="post">
+                            <button class="btn btn-outline-danger" type="submit">Elimina</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

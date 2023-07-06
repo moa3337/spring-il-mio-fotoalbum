@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/resources :: head(pageTitle='PhotoDetail')">
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar(current='photos')"></nav>
+<!-- DETTAGLIO PIZZA -->
+<section class="container mt-3">
+    <div class="card rounded p-3">
+        <div class="row" th:object="${photo}">
+            <div class="col-6">
+                <h2 class="text-danger" th:text="*{title}"></h2>
+                <h4 class="">Descrizione:</h4>
+                <p th:text="*{description}"></p>
+            </div>
+            <div class="col-6">
+                <img class="w-100" th:src="*{img}"/>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

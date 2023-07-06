@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg" th:fragment="navbar(current)">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">SpringPhotos</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- nel link metto l'append active se l'area corrisponde a quel link -->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/photos}" th:classappend="${current == 'photos' ? 'active' : ''}"
+                       href="#">Photos</a>
+                    <a th:href="@{/photos/create}">Aggiungi foto</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</body>
+</html>
