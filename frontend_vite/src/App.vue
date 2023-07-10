@@ -30,9 +30,10 @@ export default {
 <template>
   <div>
     <AppHeader />
-    <main class="container">
+    <main class="">
       <!-- Router component-->
       <PhotoList :photos="photos" :title="title" />
+      <router-view></router-view>
     </main>
   </div>
 </template>

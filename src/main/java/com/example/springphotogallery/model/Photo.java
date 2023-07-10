@@ -22,8 +22,9 @@ public class Photo {
     private String img;
     @Column(nullable = false)
     private Boolean visible;
-    //@Column(nullable = false)
-    //private String category;
+    /*@Lob
+    @Column(length = 16777215)
+    private byte[] cover;*/
     private LocalDateTime createdAt;
 
     // Relazione con le categorie
