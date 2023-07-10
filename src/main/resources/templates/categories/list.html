@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/resources :: head(pageTitle='PhotoCategories')">
+</head>
+<body class="bg-dark bg-opacity-75">
+<nav th:replace="fragments/navbar :: navbar(current='photos')"></nav>
+<div class="container">
+    <h1 class="text-center text-warning my-4">
+        Lista categorie
+    </h1>
+    <!-- Form per aggiungere categorie -->
+    <div class="card rounded bg-dark bg-opacity-50 p-3">
+        <form th:object="${categoryObj}"
+              th:action="@{/categories/save}"
+              id="category-form"
+              method="post">
+            <input type="hidden" th:field="*{id}">
+            <div class="row align-items-end text-light">
+                <div class="col">
+                    <label class="form-label" for="category-name">Aggiungi o modifica una categoria</label>
+                    <input class="form-control" type="text" id="category-name"
+                           th:field="*{category_name}" th:errorClass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('category_name')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('category_name')}" th:text="${err}"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col mt-3">
+                    <button class="btn btn-outline-info" type="submit">Salva categoria</button>
+                    <button class="btn btn-outline-secondary ms-2">Annulla</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Lista delle categorie -->
+    <table class="table table-dark table-striped mt-5">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome categoria</th>
+            <th scope="col">Modifica/Elimina</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category : ${categories}" th:object="${category}">
+            <td th:text="*{id}"></td>
+            <td th:text="${category.category_name}"></td>
+            <td class="d-flex">
+                <a th:href="@{/categories(edit=*{id})}" class="btn btn-outline-info">
+                    <i class="bi bi-pencil-fill"></i>
+                </a>
+                <form th:action="@{|/categories/delete/*{id}|}" method="post">
+                    <button class="btn btn-outline-danger ms-2" type="submit">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!--
+    <div class="alert alert-info fw-bold" th:unless="${category.size() > 0}">
+        Al momento la lista degli ingredienti è vuota
+    </div> -->
+</div>
+</body>
+</html>

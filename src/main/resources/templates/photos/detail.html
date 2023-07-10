@@ -2,18 +2,30 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="fragments/resources :: head(pageTitle='PhotoDetail')">
 </head>
-<body>
+<body class="bg-dark bg-opacity-75">
 <nav th:replace="fragments/navbar :: navbar(current='photos')"></nav>
 <!-- DETTAGLIO PIZZA -->
 <section class="container mt-3">
-    <div class="card rounded p-3">
+    <div class="card rounded bg-dark bg-opacity-50 mt-5 p-3">
         <div class="row" th:object="${photo}">
-            <div class="col-6">
-                <h2 class="text-danger" th:text="*{title}"></h2>
-                <h4 class="">Descrizione:</h4>
-                <p th:text="*{description}"></p>
+            <div class="col-4">
+                <h2 class="text-warning" th:text="*{title}"></h2>
+                <h5 class="text-light mt-5">Descrizione:</h5>
+                <p class="text-light" th:text="*{description}"></p>
+                <h5 class="text-light mt-5">Categoria:</h5>
+                <ul class="ps-3">
+                    <li class="text-light"
+                        th:each="category : *{categories}"
+                        th:text="${category.category_name}">
+                    </li>
+                </ul>
+                <div class="">
+                    <a th:href="@{|/photos/edit/${photo.id}|}" class="btn btn-outline-primary mx-2">
+                        Modifica questa foto
+                    </a>
+                </div>
             </div>
-            <div class="col-6">
+            <div class="col-8">
                 <img class="w-100" th:src="*{img}"/>
             </div>
         </div>

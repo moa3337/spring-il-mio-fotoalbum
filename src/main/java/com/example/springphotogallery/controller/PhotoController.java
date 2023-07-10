@@ -1,6 +1,7 @@
 package com.example.springphotogallery.controller;
 
 import com.example.springphotogallery.model.Photo;
+import com.example.springphotogallery.repository.CategoryRepository;
 import com.example.springphotogallery.repository.PhotoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class PhotoController {
     // Questo dipende da PhotoRepository
     @Autowired
     private PhotoRepository photoRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @GetMapping
     public String list(
@@ -62,7 +65,10 @@ public class PhotoController {
     public String create(Model model) {
         // Aggiungi al model un attributo photo contenente una photo vuota
         model.addAttribute("photo", new Photo());
-        return "/photos/edit"; // Ritorno il form unico create/edit
+        // Recupera la lista delle categorie dalla repository delle categorie
+        model.addAttribute("categories", categoryRepository.findAll());
+        // Ritorno il form unico create/edit
+        return "/photos/edit";
     }
 
     /***
@@ -70,13 +76,15 @@ public class PhotoController {
      ***/
     // Controller per gestire la post del form con i dati di photo
     @PostMapping("/create")
-    public String store(@Valid @ModelAttribute("photo") Photo formPhoto, BindingResult bindingResult) {
+    public String store(@Valid @ModelAttribute("photo") Photo formPhoto, BindingResult bindingResult, Model model) {
         // Imposta il valore di visible in base alla checkbox
         formPhoto.setVisible(formPhoto.getVisible() != null && formPhoto.getVisible());
         // I dati di photo sono dentro all'oggetto formPhoto
         // Verifico in validazione se ci sono stati errori
         if (bindingResult.hasErrors()) {
             // Se ci sono stati errori
+            // Recupera la lista delle categorie dalla repository delle categorie
+            model.addAttribute("categories", categoryRepository.findAll());
             //return "/photos/edit"; // Ritorno il form unico create/edit
             return "/photos/edit"; // Ritorno il form unico create/edit
         }
@@ -99,6 +107,10 @@ public class PhotoController {
         // Cerco i dati di quella photo sul db
         // Aggiungo la photo al model
         model.addAttribute("photo", photo);
+        // Recupera la lista delle categorie dalla repository delle categorie
+        //List<Category> categories = categoryRepository.findAll();
+        //model.addAttribute("categories", categories);
+        model.addAttribute("categories", categoryRepository.findAll());
         // Ritorno il template form edit
         return "/photos/edit";
     }
@@ -107,7 +119,7 @@ public class PhotoController {
     public String doEdit(
             @PathVariable Integer id,
             @Valid @ModelAttribute("photo") Photo formPhoto,
-            BindingResult bindingResult
+            BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model
     ) {
         // Imposta il valore di visible in base alla checkbox
         formPhoto.setVisible(formPhoto.getVisible() != null && formPhoto.getVisible());
@@ -116,6 +128,8 @@ public class PhotoController {
         // La nuova verisone di photoa è formPhotoa
         // Valido il
         if (bindingResult.hasErrors()) {
+            // Recupera la lista delle categorie dalla repository delle categorie
+            model.addAttribute("categories", categoryRepository.findAll());
             // Se ci sono errori ritorno il form
             return "/photos/edit";
         }

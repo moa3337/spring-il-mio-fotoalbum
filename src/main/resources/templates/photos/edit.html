@@ -4,24 +4,26 @@
     <head th:insert="fragments/resources :: head(pageTitle='PhotoForm')">
     </head>
 </head>
-<body th:with="isEdit=${photo.id != null}">
+<body class="bg-dark bg-opacity-75" th:with="isEdit=${photo.id != null}">
 <nav th:replace="fragments/navbar :: navbar(current='photos')"></nav>
 <div class="container">
-    <h1 class="text-danger my-4"
+    <h1 class="text-warning text-center my-4"
         th:text="${isEdit ? 'Modifica questa foto' : 'Aggiungi una nuova foto alla lista'}">
     </h1>
     <!-- Form per aggiungere una foto -->
-    <form class="card rounded p-3"
+    <form class="card rounded bg-dark bg-opacity-50 p-3"
           th:action="@{${isEdit ? '/photos/edit/'+ photo.id : '/photos/create'}}"
           th:object="${photo}" method="post" id="photo-form">
-        <div class="row">
-            <div class="col">
+        <div class="row text-light">
+            <div class="col-12">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="photo-visible" th:field="*{visible}"/>
-                    <label class="form-check-label" for="photo-visible">Visibile?</label>
+                    <label class="form-check-label" for="photo-visible">
+                        Vuoi rendere visibile la foto?
+                    </label>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-6 my-3">
                 <!-- input per il titolo -->
                 <label class="form-label" for="photo-title">Nome della foto</label>
                 <input class="form-control" type="text" id="photo-title"
@@ -34,11 +36,16 @@
                 <!-- input per il link della foto -->
                 <label class="form-label" for="photo-img">Link foto</label>
                 <input class="form-control" type="text" id="photo-img" th:field="*{img}">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('img')}">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('img')}" th:text="${err}"></li>
+                    </ul>
+                </div>
             </div>
             <!-- input per la descrizione -->
-            <div class="col-6">
+            <div class="col-6 mt-3">
                 <label class="form-label" for="photo-description">Descrizione della foto</label>
-                <textarea class="form-control" type="text" id="photo-description" rows="3"
+                <textarea class="form-control" type="text" id="photo-description" rows="4"
                           th:field="*{description}" th:errorClass="is-invalid"></textarea>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}">
                     <ul>
@@ -46,9 +53,18 @@
                     </ul>
                 </div>
             </div>
+            <p class="my-2">Seleziona categorie:</p>
+            <div class="col-12 d-flex">
+                <div class="form-check" th:each="category : ${categories}">
+                    <input class="form-check-input" type="checkbox" th:value="${category.id}"
+                           th:field="*{categories}" th:id="|category_${category.id}|">
+                    <label class="form-check-label me-4" th:for="|category_${category.id}|"
+                           th:text="${category.category_name}"></label>
+                </div>
+            </div>
             <!-- button per il submit del form -->
-            <div class="col mt-3">
-                <button class="btn btn-outline-primary" type="submit"
+            <div class="col mt-5">
+                <button class="btn btn-outline-info" type="submit"
                         th:text="${isEdit ? 'Salva modifiche' : 'Aggiungi nuova foto'}"
                 ></button>
                 <a class="btn btn-outline-secondary ms-2" th:href="@{/photos}">Torna alla
